@@ -16,10 +16,22 @@ body {
 
 a {
   text-decoration: none;
+  color: black;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+img
+{
+  cursor: pointer;
 }
 
 li {
   list-style: none;
+}
+
+body {
+  background-color: #FDE7BB;
 }
 
 .App {
@@ -29,9 +41,13 @@ li {
   flex-direction: column;
 }
 .container {
-  width: 1366px;
-  background-color: red;
   align-self: center;
+  width: 1366px;
 }
 
 /**************** MAIN ****************/
+
+header {
+  display: flex;
+  flex-direction: column;
+}
