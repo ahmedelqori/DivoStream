@@ -1,6 +1,3 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/Login/Login";
@@ -12,6 +9,7 @@ function App() {
     <div className="App">
       <Header />
       <Routes>
+        <Route path="/" element={<Home />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
       </Routes>

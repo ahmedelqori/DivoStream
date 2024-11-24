@@ -6,15 +6,18 @@ const Line = styled.div`
   width: 100%;
   height: 1px;
   background-color: black;
-`
-
+`;
+const HeaderTag = styled.header`
+  display: flex;
+  flex-direction: column;
+`;
 const Header = () => {
   return (
-    <header>
+    <HeaderTag>
       <NotificationBar />
       <NavBar />
-      <Line/>
-    </header>
+      <Line />
+    </HeaderTag>
   );
 };
 

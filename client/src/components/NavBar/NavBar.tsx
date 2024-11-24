@@ -15,7 +15,9 @@ const NavBar = () => {
   return (
     <Nav className="container">
       <Ul>
-        <img src="./src/assets/logo.png" width={50} alt="Logo" />
+        <li>
+          <img src="/assets/logo.png" width={50} alt="Logo" />
+        </li>
         <Li>
           <LinkReact to={"/home"}>My Home</LinkReact>
         </Li>
@@ -35,7 +37,7 @@ const NavBar = () => {
       <LeftSide>
         <SearchIcon />
         <Notification />
-        <ProfilePic src="src/assets/ael-qori.jpeg" alt="profile picture" />
+        <ProfilePic src="assets/ael-qori.jpeg" alt="profile picture" />
         <LoginSignUp>Login</LoginSignUp>
         <LoginSignUp>SignUp</LoginSignUp>
         <Menu />

@@ -51,7 +51,7 @@ export const LinkReact = styled(Link)`
   }
 `;
 
-export const LeftSide = styled.ul`
+export const LeftSide = styled.div`
   display: flex;
   gap: 1.5rem;
   align-items: center;
