@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import { CiSearch } from "react-icons/ci";
-import { CiBellOn } from "react-icons/ci";
+import { CiSearch, CiMenuBurger, CiBellOn } from "react-icons/ci";
 import { Link } from "react-router-dom";
-import { CiMenuBurger } from "react-icons/ci";
 
 export const Nav = styled.nav`
   gap: 1rem;
