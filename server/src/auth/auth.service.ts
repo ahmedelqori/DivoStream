@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
+import { MailDto } from 'src/user/dto/mailService.dto';
 
 @Injectable()
 export class AuthService {
@@ -89,4 +90,21 @@ export class AuthService {
     });
     return accessToken;
   }
+
+  async validateWithEmail(email: string) {
+    const info: MailDto = {
+      to: email,
+      subject: 'Validate Your Account',
+      tempalte: 'verification-email',
+      context: {
+        name: 'Meedivo',
+        code: 1234,
+      },
+    };
+    await this.usersService.sendMessage(info);
+  }
+
+  
+
+  async validateWithSMS(phonenumber: string) {}
 }

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import { LoginDto } from './dto/login.dto';
@@ -21,5 +29,12 @@ export class AuthController {
   @Get('Protected')
   async protect() {
     return 'Welcome';
+  }
+
+  @Post('/verification')
+  async verification(@Query('method') method: string) {
+    console.log(method);
+    if (method === 'email') return this.authService.validateWithEmail('meedivo@gmail.com');
+    if (method === 'sms') return this.authService.validateWithSMS('');
   }
 }
