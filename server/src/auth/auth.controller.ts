@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from './guards/auth.guards';
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -21,5 +30,14 @@ export class AuthController {
   @Get('Protected')
   async protect() {
     return 'Welcome';
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/verification')
+  async verification(@Query('method') method: string, @Req() request: Request) {
+    console.log(request['user']);
+    if (method === 'email')
+      return this.authService.validateWithEmail('meedivo@gmail.com');
+    if (method === 'sms') return this.authService.validateWithSMS('');
   }
 }

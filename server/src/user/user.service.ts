@@ -2,12 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from 'src/auth/dto/createUser.dto';
-import { User, UserDocument } from 'src/models/User.model';
+import { User, UserDocument } from 'src/user/models/User.model';
 import * as bcrypt from 'bcrypt';
+import { MailerService } from '@nestjs-modules/mailer';
+import { MailDto } from './dto/mailService.dto';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly mailService: MailerService,
+  ) {}
 
   async findUserByUsername(username: string): Promise<UserDocument> {
     try {
@@ -45,5 +50,14 @@ export class UserService {
     });
     await newUser.save();
     return newUser;
+  }
+
+  async sendMessage(info: MailDto) {
+    await this.mailService.sendMail({
+      to: String(info.to),
+      subject: String(info.subject),
+      template: String(info.tempalte),
+      context: Object(info.context),
+    });
   }
 }

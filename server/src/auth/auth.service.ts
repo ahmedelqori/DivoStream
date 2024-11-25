@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
+import { MailDto } from 'src/user/dto/mailService.dto';
 
 @Injectable()
 export class AuthService {
@@ -39,7 +40,7 @@ export class AuthService {
         );
 
       const newUser = await this.usersService.createUser(userInfo);
-      const payload = { id: newUser._id, username };
+      const payload = { id: newUser._id, email: newUser.email };
       return this.signToken(payload);
     } catch (error) {
       throw error;
@@ -76,7 +77,7 @@ export class AuthService {
           HttpStatus.UNAUTHORIZED,
         );
       }
-      const payload = { id: findUser._id, username: findUser.username };
+      const payload = { id: findUser._id, email: findUser.email };
       return this.signToken(payload);
     } catch (error) {
       throw error;
@@ -89,4 +90,19 @@ export class AuthService {
     });
     return accessToken;
   }
+
+  async validateWithEmail(email: string) {
+    const info: MailDto = {
+      to: email,
+      subject: 'Validate Your Account',
+      tempalte: 'verification-email',
+      context: {
+        name: 'Meedivo',
+        code: 1234,
+      },
+    };
+    await this.usersService.sendMessage(info);
+  }
+
+  async validateWithSMS(phonenumber: string) {}
 }
