@@ -1,14 +1,18 @@
-import { flatten, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Mongoose } from 'mongoose';
 import { User } from 'src/models/User.model';
 import { CreateUserDto } from './dto/createUser.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async createUser(userInfo: CreateUserDto) {
     try {
@@ -41,6 +45,9 @@ export class AuthService {
         password: hashedPassword,
       });
       await newUser.save();
+
+      const payload = { id: newUser._id, username };
+      return this.signToken(payload);
     } catch (error) {
       throw error;
     }
@@ -76,9 +83,17 @@ export class AuthService {
           HttpStatus.UNAUTHORIZED,
         );
       }
-      return comparePassword;
+      const payload = { id: findUser._id, username: findUser.username };
+      return this.signToken(payload);
     } catch (error) {
       throw error;
     }
+  }
+
+  private async signToken(payload: any) {
+    const accessToken = await this.jwtService.signAsync(payload, {
+      secret: process.env.JWT_TOKEN,
+    });
+    return accessToken;
   }
 }
