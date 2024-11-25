@@ -7,10 +7,14 @@
   padding: 0;
   box-sizing: border-box;
 }
+html {
+  scrollbar-width: 1px; /* Firefox */
+}
 
 body {
   font-family: "Poppins", sans-serif;
   font-weight: 500;
+  scroll-behavior: smooth;
   font-style: normal;
 }
 
@@ -21,8 +25,7 @@ a {
   cursor: pointer;
 }
 
-img
-{
+img {
   cursor: pointer;
 }
 
@@ -31,7 +34,11 @@ li {
 }
 
 body {
-  background-color: #FDE7BB;
+  /* background-color: #FDE7BB; */
+  background-image: url("../public/assets/background.jpg");
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-attachment: fixed;
 }
 
 .App {
@@ -39,7 +46,7 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 .container {
   align-self: center;

@@ -14,7 +14,7 @@ const HeaderTag = styled.header`
 const Header = () => {
   return (
     <HeaderTag>
-      <NotificationBar />
+      {/* <NotificationBar /> */}
       <NavBar />
       <Line />
     </HeaderTag>

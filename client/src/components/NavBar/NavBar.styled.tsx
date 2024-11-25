@@ -10,6 +10,7 @@ export const Nav = styled.nav`
   justify-content: space-between;
   @media screen and (max-width: 1366px) {
     width: 100%;
+    padding: 0.25rem 0.5rem;
   }
 `;
 
