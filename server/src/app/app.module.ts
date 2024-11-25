@@ -6,6 +6,7 @@ import { UserModule } from 'src/user/user.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { join } from 'path';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [

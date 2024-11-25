@@ -40,7 +40,7 @@ export class AuthService {
         );
 
       const newUser = await this.usersService.createUser(userInfo);
-      const payload = { id: newUser._id, username };
+      const payload = { id: newUser._id, email: newUser.email };
       return this.signToken(payload);
     } catch (error) {
       throw error;
@@ -77,7 +77,7 @@ export class AuthService {
           HttpStatus.UNAUTHORIZED,
         );
       }
-      const payload = { id: findUser._id, username: findUser.username };
+      const payload = { id: findUser._id, email: findUser.email };
       return this.signToken(payload);
     } catch (error) {
       throw error;
@@ -103,8 +103,6 @@ export class AuthService {
     };
     await this.usersService.sendMessage(info);
   }
-
-  
 
   async validateWithSMS(phonenumber: string) {}
 }
