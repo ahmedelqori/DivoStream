@@ -1,16 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Mongoose } from 'mongoose';
-import { User } from 'src/models/User.model';
+
 import { CreateUserDto } from './dto/createUser.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
+    private usersService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -18,7 +17,9 @@ export class AuthService {
     try {
       const { username, email, password } = userInfo;
 
-      const findUser = await this.userModel.findOne({ username });
+      const findUser = await this.usersService.findUserByUsername(
+        String(username),
+      );
       if (findUser)
         throw new HttpException(
           {
@@ -27,7 +28,7 @@ export class AuthService {
           },
           HttpStatus.CONFLICT,
         );
-      const findEmail = await this.userModel.findOne({ email });
+      const findEmail = await this.usersService.findUserByEmail(String(email));
       if (findEmail)
         throw new HttpException(
           {
@@ -37,15 +38,7 @@ export class AuthService {
           HttpStatus.CONFLICT,
         );
 
-      const hashedPassword: String = await bcrypt.hash(String(password), 10);
-
-      const newUser = new this.userModel({
-        username,
-        email,
-        password: hashedPassword,
-      });
-      await newUser.save();
-
+      const newUser = await this.usersService.createUser(userInfo);
       const payload = { id: newUser._id, username };
       return this.signToken(payload);
     } catch (error) {
@@ -55,11 +48,11 @@ export class AuthService {
 
   async login(userInfo: LoginDto) {
     try {
-      const { usernameEmail, password } = userInfo;
+      const { usernameEmail: login, password } = userInfo;
 
-      const findUser = await this.userModel.findOne({
-        $or: [{ username: usernameEmail }, { email: usernameEmail }],
-      });
+      const findUser = await this.usersService.findUserByUsernameOrEmail(
+        String(login),
+      );
 
       if (!findUser)
         throw new HttpException(
